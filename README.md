@@ -1,7 +1,7 @@
 hipsterplot
 ===========
 
-because matplotlib is too mainstream (or you broke it like I did)
+because matplotlib is too mainstream <sup><sup>(or you broke it like I did)</sup></sup>
 
 for example:
 
