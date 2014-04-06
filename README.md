@@ -5,4 +5,4 @@ because matplotlib is too mainstream <sup><sup>(or you broke it like I did)</sup
 
 for example:
 
-![alt tag](http://i.imgur.com/FXGs1jM.png)
+![alt tag](http://i.imgur.com/uTySFPA.png)
