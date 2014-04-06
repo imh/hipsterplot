@@ -1,4 +1,4 @@
 hipsterplot
 ===========
 
-matplotlib is too mainstream
+because matplotlib is too mainstream
