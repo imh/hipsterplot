@@ -98,3 +98,8 @@ if __name__ == '__main__':
     ys = [math.cos(x/5.0) for x in xs]
     num_x_chars = min(70, len(ys))
     plot(ys, x_vals=xs, num_x_chars=num_x_chars, num_y_chars=15)
+
+    k = 20
+    ys = [random.gauss(0, 0.5) + math.cos(x/5.0/k) for x in xrange(180*k)]
+    num_x_chars = min(160, len(ys))
+    plot(ys, num_x_chars=num_x_chars, num_y_chars=25)
