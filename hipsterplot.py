@@ -29,7 +29,6 @@ def yloop(ys, num_y_chars, y_bin_ends):
             num_bin_ys += 1
             k += 1
         else:
-            # chars[j][l] = charlookup(num_bin_ys)
             column[l] = charlookup(num_bin_ys)
             num_bin_ys = 0
             l += 1
@@ -56,18 +55,15 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
     xmin = min(x_vals)
     xmax = max(x_vals)
 
-    #figure out the boundaries between each bin on x and y
     xbinwidth = (xmax - xmin) / num_x_chars
     y_bin_width = (ymax - ymin) / num_y_chars
 
     x_bin_ends = [xmin + (i+1.0) * xbinwidth for i in xrange(num_x_chars)]
-    y_bin_ends = [ymin + (i+0.0) * y_bin_width for i in xrange(num_y_chars)]
-    y_bin_ends.reverse()
+    y_bin_ends = [ymin + (i-1.0) * y_bin_width for i in xrange(num_y_chars,0,-1)]
 
-    columns = []
+    columns = [] #NOTE: could allocate the thing all at once, if performance were a consideration, but column[i][j]=foo set column[:][j] for some reason
     i = 0
     j = 0
-    x_bin_end = x_bin_ends[0]
     ys = []
     while (i < num_points):
         x = x_vals[i]
