@@ -9,4 +9,4 @@ for example:
 
 also looks good on noisy data:
 
-![alt tag](http://i.imgur.com/isozadb.png)
+![alt tag](http://i.imgur.com/cedrFqR.png)
