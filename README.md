@@ -7,6 +7,6 @@ for example:
 
 ![alt tag](http://i.imgur.com/uTySFPA.png)
 
-also looks good on noisy data:
+also looks good on noisy data and plots of non-functions:
 
 ![alt tag](http://i.imgur.com/cedrFqR.png)
