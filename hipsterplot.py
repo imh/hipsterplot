@@ -60,7 +60,7 @@ def yloop(ys, num_y_chars, y_bin_ends):
 
 
 def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
-    if x_vals == None:
+    if x_vals is None:
         x_vals = range(len(y_vals))
     else:
         if len(x_vals) != len(y_vals):
