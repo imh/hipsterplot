@@ -41,24 +41,25 @@ def charlookup(num_chars):
     return next(ch for num, ch in CHAR_LOOKUP_SYMBOLS if num_chars <= num)
 
 
-def yloop(ys, amount, bin_ends):
+def bin_generator(data, amount, bin_ends):
+    """ Yields a list with all data for each bin """
     max_idx_end = len(bin_ends) - 1
     iends = enumerate(bin_ends)
 
     idx_end, value_end = next(iends)
-    num_bin_ys = 0
-    for y in sorted(ys):
-        while y >= value_end and idx_end != max_idx_end:
-            yield charlookup(num_bin_ys)
-            num_bin_ys = 0
+    bin_data = []
+    for el in sorted(data):
+        while el >= value_end and idx_end != max_idx_end:
+            yield bin_data
+            bin_data = []
             idx_end, value_end = next(iends)
-        num_bin_ys += 1
+        bin_data.append(el)
 
     # Finish
     for unused in iends:
-        yield charlookup(num_bin_ys)
-        num_bin_ys = 0
-    yield charlookup(num_bin_ys)
+        yield bin_data
+        bin_data = []
+    yield bin_data
 
 
 def enumerated_reversed(seq):
@@ -85,6 +86,8 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
     x_bin_ends = [xmin + (i+1.0) * xbinwidth for i in range(num_x_chars)]
     y_bin_ends = [ymin + (i+1.0) * y_bin_width for i in range(num_y_chars)]
 
+    yloop = lambda *args: [charlookup(len(el)) for el in bin_generator(*args)]
+
     columns = [] #NOTE: could allocate the thing all at once, if performance were a consideration, but column[i][j]=foo set column[:][j] for some reason
     i = 0
     j = 0
@@ -95,11 +98,11 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
             ys.append(y_vals[i])
             i += 1
         else:
-            columns.append(list(yloop(ys, num_y_chars, y_bin_ends)))
+            columns.append(yloop(ys, num_y_chars, y_bin_ends))
             ys = []
             j += 1
 
-    columns.append(list(yloop(ys, num_y_chars, y_bin_ends)))
+    columns.append(yloop(ys, num_y_chars, y_bin_ends))
 
     for row, y_bin_end in enumerated_reversed(y_bin_ends):
         strout = ""
