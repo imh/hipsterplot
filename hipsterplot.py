@@ -22,11 +22,12 @@
 
 from __future__ import print_function, division
 import math, random, sys
+from operator import itemgetter
 
 # Python 2.x and 3.x compatibility
 if sys.version_info.major == 2:
     range = xrange
-    from future_builtins import zip
+    from future_builtins import map, zip
 
 
 CHAR_LOOKUP_SYMBOLS = [(0, ' '), # Should be sorted
@@ -41,7 +42,7 @@ def charlookup(num_chars):
     return next(ch for num, ch in CHAR_LOOKUP_SYMBOLS if num_chars <= num)
 
 
-def bin_generator(data, amount, bin_ends):
+def bin_generator(data, bin_ends):
     """ Yields a list with all data for each bin """
     max_idx_end = len(bin_ends) - 1
     iends = enumerate(bin_ends)
@@ -72,8 +73,6 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
     else:
         if len(x_vals) != len(y_vals):
             raise ValueError("x_vals and y_vals must have the same length")
-        x_vals, y_vals = zip(*sorted(zip(x_vals, y_vals)))
-    num_points = len(y_vals)
 
     ymin = min(y_vals)
     ymax = max(y_vals)
@@ -83,26 +82,14 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
     xbinwidth = (xmax - xmin) / num_x_chars
     y_bin_width = (ymax - ymin) / num_y_chars
 
-    x_bin_ends = [xmin + (i+1.0) * xbinwidth for i in range(num_x_chars)]
-    y_bin_ends = [ymin + (i+1.0) * y_bin_width for i in range(num_y_chars)]
+    x_bin_ends = [(xmin + (i+1) * xbinwidth, 0) for i in range(num_x_chars)]
+    y_bin_ends = [ymin + (i+1) * y_bin_width for i in range(num_y_chars)]
+
+    columns_pairs = bin_generator(zip(x_vals, y_vals), x_bin_ends)
 
     yloop = lambda *args: [charlookup(len(el)) for el in bin_generator(*args)]
-
-    columns = [] #NOTE: could allocate the thing all at once, if performance were a consideration, but column[i][j]=foo set column[:][j] for some reason
-    i = 0
-    j = 0
-    ys = []
-    while (i < num_points):
-        x = x_vals[i]
-        if (j == len(x_bin_ends) or x < x_bin_ends[j]):
-            ys.append(y_vals[i])
-            i += 1
-        else:
-            columns.append(yloop(ys, num_y_chars, y_bin_ends))
-            ys = []
-            j += 1
-
-    columns.append(yloop(ys, num_y_chars, y_bin_ends))
+    ygetter = lambda iterable: map(itemgetter(1), iterable)
+    columns = [yloop(ygetter(pairs), y_bin_ends) for pairs in columns_pairs]
 
     for row, y_bin_end in enumerated_reversed(y_bin_ends):
         strout = ""
@@ -111,6 +98,7 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
         for column in range(len(x_bin_ends)):
             strout += columns[column][row]
         print(strout)
+
 
 if __name__ == '__main__':
     ys = [math.cos(x/5.0) for x in range(180)]
