@@ -26,9 +26,7 @@ import math, random, sys
 # Python 2.x and 3.x compatibility
 if sys.version_info.major == 2:
     range = xrange
-    ozip = zip # Old zip (returns a list)
-else:
-    ozip = lambda *args: list(zip(*args))
+    from future_builtins import zip
 
 
 CHAR_LOOKUP_SYMBOLS = [(0, ' '), # Should be sorted
@@ -65,15 +63,11 @@ def yloop(ys, num_y_chars, y_bin_ends):
 
 def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
     if x_vals == None:
-        x_vals = range(len(y_vals))
+        x_vals = list(range(len(y_vals)))
     else:
         if len(x_vals) != len(y_vals):
-            raise Exception("x_vals and y_vals must be the same length")
-        xy = ozip(x_vals, y_vals)
-        xy.sort(key=(lambda x: x[0]))
-        _xy = ozip(*xy)
-        x_vals = list(_xy[0])
-        y_vals = list(_xy[1])
+            raise ValueError("x_vals and y_vals must have the same length")
+        x_vals, y_vals = zip(*sorted(zip(x_vals, y_vals)))
     num_points = len(y_vals)
 
     ymin = min(y_vals)
