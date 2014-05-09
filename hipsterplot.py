@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from __future__ import print_function
+from __future__ import print_function, division
 import math, random, sys
 
 # Python 2.x and 3.x compatibility
@@ -41,24 +41,24 @@ def charlookup(num_chars):
     return next(ch for num, ch in CHAR_LOOKUP_SYMBOLS if num_chars <= num)
 
 
-def yloop(ys, num_y_chars, y_bin_ends):
-    column = [' '] * num_y_chars
-    ys.sort()
-    k = 0
-    l = 0
+def yloop(ys, amount, bin_ends):
+    max_idx_end = len(bin_ends) - 1
+    iends = enumerate(bin_ends)
+
+    idx_end, value_end = next(iends)
     num_bin_ys = 0
-    while (k < len(ys)):
-        y = ys[k]
-        if (l == len(y_bin_ends) or y < y_bin_ends[l]):
-            num_bin_ys += 1
-            k += 1
-        else:
-            column[l] = charlookup(num_bin_ys)
+    for y in sorted(ys):
+        while y >= value_end and idx_end != max_idx_end:
+            yield charlookup(num_bin_ys)
             num_bin_ys = 0
-            l += 1
-    l_ = min(l, len(y_bin_ends)-1)
-    column[l_] = charlookup(num_bin_ys)
-    return column
+            idx_end, value_end = next(iends)
+        num_bin_ys += 1
+
+    # Finish
+    for unused in iends:
+        yield charlookup(num_bin_ys)
+        num_bin_ys = 0
+    yield charlookup(num_bin_ys)
 
 
 def enumerated_reversed(seq):
@@ -95,11 +95,11 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
             ys.append(y_vals[i])
             i += 1
         else:
-            columns.append(yloop(ys, num_y_chars, y_bin_ends))
+            columns.append(list(yloop(ys, num_y_chars, y_bin_ends)))
             ys = []
             j += 1
 
-    columns.append(yloop(ys, num_y_chars, y_bin_ends))
+    columns.append(list(yloop(ys, num_y_chars, y_bin_ends)))
 
     for row, y_bin_end in enumerated_reversed(y_bin_ends):
         strout = ""
