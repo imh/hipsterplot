@@ -20,8 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import math
-import random
+from __future__ import print_function
+import math, random, sys
+
+# Python 2.x and 3.x compatibility
+if sys.version_info.major == 2:
+    range = xrange
+    ozip = zip # Old zip (returns a list)
+else:
+    ozip = lambda *args: list(zip(*args))
 
 def charlookup(num_chars):
     if num_chars <= 0:
@@ -65,9 +72,9 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
     else:
         if len(x_vals) != len(y_vals):
             raise Exception("x_vals and y_vals must be the same length")
-        xy = list(zip(x_vals, y_vals))
+        xy = ozip(x_vals, y_vals)
         xy.sort(key=(lambda x: x[0]))
-        _xy = zip(*xy)
+        _xy = ozip(*xy)
         x_vals = list(_xy[0])
         y_vals = list(_xy[1])
     num_points = len(y_vals)
@@ -80,8 +87,8 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
     xbinwidth = (xmax - xmin) / num_x_chars
     y_bin_width = (ymax - ymin) / num_y_chars
 
-    x_bin_ends = [xmin + (i+1.0) * xbinwidth for i in xrange(num_x_chars)]
-    y_bin_ends = [ymin + (i-1.0) * y_bin_width for i in xrange(num_y_chars,0,-1)]
+    x_bin_ends = [xmin + (i+1.0) * xbinwidth for i in range(num_x_chars)]
+    y_bin_ends = [ymin + (i-1.0) * y_bin_width for i in range(num_y_chars,0,-1)]
 
     columns = [] #NOTE: could allocate the thing all at once, if performance were a consideration, but column[i][j]=foo set column[:][j] for some reason
     i = 0
@@ -103,21 +110,21 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
         strout = ""
         y_bin_mid = y_bin_end + y_bin_width * 0.5
         strout += "{:10.4f}".format(y_bin_mid) + ' '
-        for column in xrange(len(x_bin_ends)):
+        for column in range(len(x_bin_ends)):
             strout += columns[column][row]
-        print strout
+        print(strout)
 
 if __name__ == '__main__':
-    ys = [math.cos(x/5.0) for x in xrange(180)]
+    ys = [math.cos(x/5.0) for x in range(180)]
     num_x_chars = min(70, len(ys))
     plot(ys, num_x_chars=num_x_chars, num_y_chars=15)
 
-    xs = [50.0*random.random() for x in xrange(180)]
+    xs = [50.0*random.random() for x in range(180)]
     ys = [math.cos(x/5.0) for x in xs]
     num_x_chars = min(70, len(ys))
     plot(ys, x_vals=xs, num_x_chars=num_x_chars, num_y_chars=15)
 
     k = 20
-    ys = [random.gauss(0, 0.5) + math.cos(x/5.0/k) for x in xrange(180*k)]
+    ys = [random.gauss(0, 0.5) + math.cos(x/5.0/k) for x in range(180*k)]
     num_x_chars = min(160, len(ys))
     plot(ys, num_x_chars=num_x_chars, num_y_chars=25)
