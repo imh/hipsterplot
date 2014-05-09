@@ -40,16 +40,16 @@ CHAR_LOOKUP_SYMBOLS = [(0, ' '), # Should be sorted
 def charlookup(num_chars):
     return next(ch for num, ch in CHAR_LOOKUP_SYMBOLS if num_chars <= num)
 
+
 def yloop(ys, num_y_chars, y_bin_ends):
     column = [' '] * num_y_chars
     ys.sort()
-    ys.reverse()
     k = 0
     l = 0
     num_bin_ys = 0
     while (k < len(ys)):
         y = ys[k]
-        if (l == len(y_bin_ends) or y >= y_bin_ends[l]):
+        if (l == len(y_bin_ends) or y < y_bin_ends[l]):
             num_bin_ys += 1
             k += 1
         else:
@@ -59,6 +59,10 @@ def yloop(ys, num_y_chars, y_bin_ends):
     l_ = min(l, len(y_bin_ends)-1)
     column[l_] = charlookup(num_bin_ys)
     return column
+
+
+def enumerated_reversed(seq):
+    return zip(range(len(seq) - 1, -1, -1), reversed(seq))
 
 
 def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
@@ -79,7 +83,7 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
     y_bin_width = (ymax - ymin) / num_y_chars
 
     x_bin_ends = [xmin + (i+1.0) * xbinwidth for i in range(num_x_chars)]
-    y_bin_ends = [ymin + (i-1.0) * y_bin_width for i in range(num_y_chars,0,-1)]
+    y_bin_ends = [ymin + (i+1.0) * y_bin_width for i in range(num_y_chars)]
 
     columns = [] #NOTE: could allocate the thing all at once, if performance were a consideration, but column[i][j]=foo set column[:][j] for some reason
     i = 0
@@ -97,7 +101,7 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
 
     columns.append(yloop(ys, num_y_chars, y_bin_ends))
 
-    for row, y_bin_end in enumerate(y_bin_ends):
+    for row, y_bin_end in enumerated_reversed(y_bin_ends):
         strout = ""
         y_bin_mid = y_bin_end + y_bin_width * 0.5
         strout += "{:10.4f}".format(y_bin_mid) + ' '
