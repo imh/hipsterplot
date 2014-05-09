@@ -30,20 +30,17 @@ if sys.version_info.major == 2:
 else:
     ozip = lambda *args: list(zip(*args))
 
+
+CHAR_LOOKUP_SYMBOLS = [(0, ' '), # Should be sorted
+                       (1, '.'),
+                       (2, ':'),
+                       #(3, '!'),
+                       (4, '|'),
+                       #(8, '+'),
+                       (float("inf"), '#')]
+
 def charlookup(num_chars):
-    if num_chars <= 0:
-        return ' '
-    if num_chars <= 1:
-        return '.'
-    if num_chars <= 2:
-        return ':'
-    # if num_chars <= 3:
-    #     return '!'
-    if num_chars <= 4:
-        return '|'
-    # if num_chars <= 8:
-    #     return '+'
-    return '#'
+    return next(ch for num, ch in CHAR_LOOKUP_SYMBOLS if num_chars <= num)
 
 def yloop(ys, num_y_chars, y_bin_ends):
     column = [' '] * num_y_chars
