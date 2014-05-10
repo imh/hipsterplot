@@ -86,18 +86,14 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
     y_bin_ends = [ymin + (i+1) * y_bin_width for i in range(num_y_chars)]
 
     columns_pairs = bin_generator(zip(x_vals, y_vals), x_bin_ends)
-
     yloop = lambda *args: [charlookup(len(el)) for el in bin_generator(*args)]
     ygetter = lambda iterable: map(itemgetter(1), iterable)
-    columns = [yloop(ygetter(pairs), y_bin_ends) for pairs in columns_pairs]
+    columns = (yloop(ygetter(pairs), y_bin_ends) for pairs in columns_pairs)
+    rows = list(zip(*columns))
 
-    for row, y_bin_end in enumerated_reversed(y_bin_ends):
-        strout = ""
-        y_bin_mid = y_bin_end + y_bin_width * 0.5
-        strout += "{:10.4f}".format(y_bin_mid) + ' '
-        for column in range(len(x_bin_ends)):
-            strout += columns[column][row]
-        print(strout)
+    for idx, row in enumerated_reversed(rows):
+        y_bin_mid = y_bin_ends[idx] - y_bin_width * 0.5
+        print("{:10.4f} {}".format(y_bin_mid, "".join(row)))
 
 
 if __name__ == '__main__':
