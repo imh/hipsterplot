@@ -42,11 +42,12 @@ CHAR_LOOKUP_SYMBOLS = [(0, ' '), # Should be sorted
                        (float("inf"), '#')]
 
 def charlookup(num_chars):
+    """ Character for the given amount of elements in the bin """
     return next(ch for num, ch in CHAR_LOOKUP_SYMBOLS if num_chars <= num)
 
 
 def bin_generator(data, bin_ends):
-    """ Yields a list with all data for each bin """
+    """ Yields a list for each bin """
     max_idx_end = len(bin_ends) - 1
     iends = enumerate(bin_ends)
 
@@ -67,15 +68,23 @@ def bin_generator(data, bin_ends):
 
 
 def enumerated_reversed(seq):
+    """ A version of reversed(enumerate(seq)) that actually works """
     return zip(range(len(seq) - 1, -1, -1), reversed(seq))
 
 
 def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
+    """
+    Plots the values given by y_vals. The x_vals values are the y indexes, by
+    default, unless explicitly given. Pairs (x, y) are matched by the x_vals
+    and y_vals indexes, so these must have the same length.
+
+    The num_x_chars and num_y_chars inputs are respectively the width and
+    height for the output plot to be printed, given in characters.
+    """
     if x_vals == None:
         x_vals = list(range(len(y_vals)))
-    else:
-        if len(x_vals) != len(y_vals):
-            raise ValueError("x_vals and y_vals must have the same length")
+    elif len(x_vals) != len(y_vals):
+        raise ValueError("x_vals and y_vals must have the same length")
 
     ymin = min(y_vals)
     ymax = max(y_vals)
@@ -100,6 +109,7 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
 
 
 if __name__ == '__main__':
+    # Some examples
     ys = [math.cos(x/5.0) for x in range(180)]
     num_x_chars = min(70, len(ys))
     plot(ys, num_x_chars=num_x_chars, num_y_chars=15)
