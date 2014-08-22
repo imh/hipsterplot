@@ -82,7 +82,7 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
     The num_x_chars and num_y_chars inputs are respectively the width and
     height for the output plot to be printed, given in characters.
     """
-    if x_vals == None:
+    if x_vals is None:
         x_vals = list(range(len(y_vals)))
     elif len(x_vals) != len(y_vals):
         raise ValueError("x_vals and y_vals must have the same length")
