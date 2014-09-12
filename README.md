@@ -18,3 +18,5 @@ for example:
 also looks good on noisy data and plots of non-functions:
 
 ![alt tag](http://i.imgur.com/cedrFqR.png)
+
+More examples in the main function of hipsterplot.py.
