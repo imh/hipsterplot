@@ -1,7 +1,9 @@
 hipsterplot
 ===========
 
-because matplotlib is too mainstream <sup><sup>(or you broke it like I did)</sup></sup>
+because matplotlib is too mainstream <sup><sup>(or you broke it like I did)</sup></sup>. Also good while debugging numerical code.
+
+-----------------------------------
 
 A python script for command line plotting. 
 
