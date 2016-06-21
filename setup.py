@@ -3,6 +3,9 @@
 # MIT Licensed. See hipsterplot.py for more information.
 
 from setuptools import setup
+from setuptools.command import sdist
+
+sdist.READMES = ("README.md",) # Includes it in the source distribution
 
 metadata = {
   "name": "hipsterplot",
