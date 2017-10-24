@@ -7,7 +7,7 @@ because matplotlib is too mainstream <sup><sup>(or you broke it like I did)</sup
 
 A python script for command line plotting. 
 
-Run setup.py to install.
+`pip install hipsterplot` is all you need.
 
 Can plot a list of y values [ys] which works for evenly spaced points, or pairs of lists ([xs], [ys]) which works for heterogeneous x-spacing, or disorder in the x's (scatterplots).
 
