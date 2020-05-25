@@ -9,7 +9,7 @@ sdist.READMES = ("README.md",) # Includes it in the source distribution
 
 metadata = {
   "name": "hipsterplot",
-  "version": "0.1",
+  "version": "0.1.1",
   "author": "Ian Horn and Danilo J. S. Bellini",
   "author_email": "horn.imh@gmail.com ; danilo.bellini.gmail.com",
   "url": "http://github.com/imh/hipsterplot",

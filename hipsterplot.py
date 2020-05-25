@@ -37,9 +37,9 @@ if sys.version_info.major == 2:
 CHAR_LOOKUP_SYMBOLS = [(0, ' '), # Should be sorted
                        (1, '.'),
                        (2, ':'),
-                       #(3, '!'),
+                       (3, '!'),
                        (4, '|'),
-                       #(8, '+'),
+                       (8, '+'),
                        (float("inf"), '#')]
 
 def charlookup(num_chars):
@@ -73,15 +73,7 @@ def enumerated_reversed(seq):
     return zip(range(len(seq) - 1, -1, -1), reversed(seq))
 
 
-def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
-    """
-    Plots the values given by y_vals. The x_vals values are the y indexes, by
-    default, unless explicitly given. Pairs (x, y) are matched by the x_vals
-    and y_vals indexes, so these must have the same length.
-
-    The num_x_chars and num_y_chars inputs are respectively the width and
-    height for the output plot to be printed, given in characters.
-    """
+def gen_plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
     y_vals = list(y_vals)
     x_vals = list(x_vals) if x_vals else list(range(len(y_vals)))
     if len(x_vals) != len(y_vals):
@@ -106,7 +98,19 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
 
     for idx, row in enumerated_reversed(rows):
         y_bin_mid = y_bin_ends[idx] - y_bin_width * 0.5
-        print("{:10.4f} {}".format(y_bin_mid, "".join(row)))
+    return "{:10.4f} {}".format(y_bin_mid, "".join(row))
+
+
+def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
+    """
+    Plots the values given by y_vals. The x_vals values are the y indexes, by
+    default, unless explicitly given. Pairs (x, y) are matched by the x_vals
+    and y_vals indexes, so these must have the same length.
+
+    The num_x_chars and num_y_chars inputs are respectively the width and
+    height for the output plot to be printed, given in characters.
+    """
+    print(gen_plot(y_vals, x_vals, num_x_chars, num_y_chars))
 
 
 if __name__ == '__main__':
