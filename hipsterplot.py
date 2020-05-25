@@ -25,7 +25,7 @@
 # SOFTWARE.
 
 from __future__ import print_function, division
-import math, random, sys
+import math, random, sys, os
 from operator import itemgetter
 
 # Python 2.x and 3.x compatibility
@@ -98,7 +98,8 @@ def gen_plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
 
     for idx, row in enumerated_reversed(rows):
         y_bin_mid = y_bin_ends[idx] - y_bin_width * 0.5
-    return "{:10.4f} {}".format(y_bin_mid, "".join(row))
+    lines = "{:10.4f} {}".format(y_bin_mid, "".join(row))
+    return os.linesep.join([line.rstrip() for line in lines.split(os.linesep)])
 
 
 def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
