@@ -73,7 +73,7 @@ def enumerated_reversed(seq):
     return zip(range(len(seq) - 1, -1, -1), reversed(seq))
 
 
-def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
+def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15, show_x_extrema=True):
     """
     Plots the values given by y_vals. The x_vals values are the y indexes, by
     default, unless explicitly given. Pairs (x, y) are matched by the x_vals
@@ -107,6 +107,9 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
     for idx, row in enumerated_reversed(rows):
         y_bin_mid = y_bin_ends[idx] - y_bin_width * 0.5
         print("{:10.4f} {}".format(y_bin_mid, "".join(row)))
+    
+    if show_x_extrema:
+        print("x:  {:8.4f}{}{:10.4f}".format(xmin, " "*(num_x_chars-11), xmax))
 
 
 if __name__ == '__main__':
