@@ -83,7 +83,7 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15, show_x_extrema=Tru
     height for the output plot to be printed, given in characters.
     """
     y_vals = list(y_vals)
-    x_vals = list(x_vals) if x_vals else list(range(len(y_vals)))
+    x_vals = list(x_vals) if x_vals is not None else list(range(len(y_vals)))
     if len(x_vals) != len(y_vals):
         raise ValueError("x_vals and y_vals must have the same length")
 
