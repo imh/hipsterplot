@@ -110,6 +110,7 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15, show_x_extrema=Tru
     
     if show_x_extrema:
         print("x:  {:8.4f}{}{:10.4f}".format(xmin, " "*(num_x_chars-11), xmax))
+        print("     {:8.4f}".format(xmin + xbinwidth))
 
 
 if __name__ == '__main__':
