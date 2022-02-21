@@ -25,13 +25,8 @@
 # SOFTWARE.
 
 from __future__ import print_function, division
-import math, random, sys
+import math, random
 from operator import itemgetter
-
-# Python 2.x and 3.x compatibility
-if sys.version_info.major == 2:
-    range = xrange
-    from future_builtins import map, zip
 
 
 CHAR_LOOKUP_SYMBOLS = [(0, ' '), # Should be sorted
@@ -106,11 +101,11 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15, show_x_extrema=Tru
 
     for idx, row in enumerated_reversed(rows):
         y_bin_mid = y_bin_ends[idx] - y_bin_width * 0.5
-        print("{:10.4f} {}".format(y_bin_mid, "".join(row)))
+        print("{:10.4g} {}".format(y_bin_mid, "".join(row)))
     
     if show_x_extrema:
-        print("x:  {:8.4f}{}{:10.4f}".format(xmin, " "*(num_x_chars-11), xmax))
-        print("     {:8.4f}".format(xmin + xbinwidth))
+        print("x:  {:8.4g}{}{:10.4g}".format(xmin, " "*(num_x_chars-11), xmax))
+        print("     {:8.4g}".format(xmin + xbinwidth))
 
 
 if __name__ == '__main__':
