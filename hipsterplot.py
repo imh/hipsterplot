@@ -25,13 +25,9 @@
 # SOFTWARE.
 
 from __future__ import print_function, division
-import math, random, sys
+import math, random
 from operator import itemgetter
-
-# Python 2.x and 3.x compatibility
-if sys.version_info.major == 2:
-    range = xrange
-    from future_builtins import map, zip
+import numpy as np
 
 
 CHAR_LOOKUP_SYMBOLS = [(0, ' '), # Should be sorted
@@ -73,7 +69,7 @@ def enumerated_reversed(seq):
     return zip(range(len(seq) - 1, -1, -1), reversed(seq))
 
 
-def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
+def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15, show_x_extrema=True):
     """
     Plots the values given by y_vals. The x_vals values are the y indexes, by
     default, unless explicitly given. Pairs (x, y) are matched by the x_vals
@@ -83,7 +79,7 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
     height for the output plot to be printed, given in characters.
     """
     y_vals = list(y_vals)
-    x_vals = list(x_vals) if x_vals else list(range(len(y_vals)))
+    x_vals = list(x_vals) if x_vals is not None else list(range(len(y_vals)))
     if len(x_vals) != len(y_vals):
         raise ValueError("x_vals and y_vals must have the same length")
 
@@ -106,8 +102,37 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
 
     for idx, row in enumerated_reversed(rows):
         y_bin_mid = y_bin_ends[idx] - y_bin_width * 0.5
-        print("{:10.4f} {}".format(y_bin_mid, "".join(row)))
+        print("{:10.4g} {}".format(y_bin_mid, "".join(row)))
+    
+    if show_x_extrema:
+        print("x:  {:8.4g}{}{:10.4g}".format(xmin, " "*(num_x_chars-11), xmax))
+        print("     {:8.4g}".format(xmin + xbinwidth))
 
+
+gscale2 = ".#"
+gscale10 = '@%#*+=-:. '[::-1]
+col_strings = dict(black="{}", red="\033[91m{}\033[00m", blue="\033[94m{}\033[00m")
+
+
+def imshow(U, scale=gscale2, color=True):
+    U = U/np.max(np.abs(U))
+    N_scale = len(scale)
+    Δ_scale = 1.0/N_scale
+    for i in range(U.shape[0]):
+        for j in range(U.shape[1]):
+            value = abs(U[i,j])
+            
+            color_val = "black"
+            if color:
+                if U[i,j]>= 0:
+                    color_val = "blue"
+                else:
+                    color_val = "red"
+                    
+            idx_scale = min(int(np.round(value/Δ_scale)), N_scale-1)
+            print(col_strings[color_val].format(scale[idx_scale]), end='')
+
+        print()
 
 if __name__ == '__main__':
     # Some examples
